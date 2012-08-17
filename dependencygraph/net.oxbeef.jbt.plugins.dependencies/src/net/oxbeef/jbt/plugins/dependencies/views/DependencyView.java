@@ -1,9 +1,14 @@
 package net.oxbeef.jbt.plugins.dependencies.views;
 
+import net.oxbeef.jbt.plugins.dependencies.dialogs.LoadGraphDialog;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.layouts.LayoutStyles;
@@ -44,14 +49,64 @@ public class DependencyView extends ViewPart {
 
 	private Graph graph;
 	private int layout = 1;
+	public Graph getGraph() {
+		return graph;
+	}
+	
+	private void addMenu(final Graph graph) {
+	    Menu menu = new Menu(graph.getShell(), SWT.POP_UP);
+	    graph.setMenu(menu);
+	    
+	    
+	    MenuItem item = new MenuItem(menu, SWT.PUSH);
+	    item.setText("Clear Graph");
+	    item.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				GraphUtil.clearGraph(graph);
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+	    
+	    MenuItem loadGraph = new MenuItem(menu, SWT.PUSH);
+	    loadGraph.setText("Load Graph...");
+	    loadGraph.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				// TODO open a dialog! 
+				// options:  show externals, which component, etc
+				LoadGraphDialog d = new LoadGraphDialog(graph.getShell());
+				int ret = d.open();
+				String comp = d.getComponentName();
+//				new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, false);
+				new GraphContentUtil().createOneComponentDepGraph(graph, comp, true);
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 
+	    MenuItem organizeGraph = new MenuItem(menu, SWT.PUSH);
+	    organizeGraph.setText("Organize Graph");
+	    organizeGraph.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				GraphUtil.organizeGraph(graph);
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+
+	}
+	
 	public void createPartControl(Composite parent) {
+		
 		// Graph will hold all other objects
 		graph = new Graph(parent, SWT.NONE);
 
+		addMenu(graph);
+	    
+	    
 		//GraphUtil.createFullGraph(graph);
 		//GraphUtil.createOneComponentDepGraph(graph, "common", false) {
-		GraphUtil.createComponentsToOneComplonentPluginGraph(graph, "as", false);
+		new GraphContentUtil().createOneComponentDepGraph(graph, "as", false);
 		
 		graph.setLayoutAlgorithm(new RadialLayoutAlgorithm(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
