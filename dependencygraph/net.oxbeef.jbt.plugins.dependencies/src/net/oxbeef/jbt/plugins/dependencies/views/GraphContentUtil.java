@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import net.oxbeef.jbt.plugins.dependencies.Activator;
-import net.oxbeef.jbt.plugins.dependencies.Activator.NodeModel;
+import net.oxbeef.jbt.plugins.dependencies.model.DependencyModel;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -38,7 +38,7 @@ public class GraphContentUtil {
 	
 	// creates a map of one component's plugins and it's lower level plugin deps
 	public void createComponentsToOneComplonentPluginGraph(Graph graph, String lowComponent, boolean showExternals) {
-		NodeModel nm = Activator.getDefault().getModel();
+		DependencyModel nm = Activator.getDefault().getModel();
 		HashMap<String, ArrayList<String>> customMap = new HashMap<String, ArrayList<String>>();
 		Iterator<String> it = nm.pluginToPlugin.keySet().iterator();
 		// Iterate through ALL plugin mappings
@@ -73,7 +73,7 @@ public class GraphContentUtil {
 	
 	// creates a map of one component's plugins and it's lower level plugin deps
 	public void createOneComponentDepGraph(Graph graph, String component, boolean showExternals) {
-		NodeModel nm = Activator.getDefault().getModel();
+		DependencyModel nm = Activator.getDefault().getModel();
 		HashMap<String, ArrayList<String>> customMap = new HashMap<String, ArrayList<String>>();
 		Iterator<String> it = nm.pluginToPlugin.keySet().iterator();
 		while(it.hasNext()) {
@@ -107,7 +107,7 @@ public class GraphContentUtil {
 	}
 	
 	public void createFullGraph(Graph graph) {
-		NodeModel nm = Activator.getDefault().getModel();
+		DependencyModel nm = Activator.getDefault().getModel();
 		HashMap<String, ArrayList<String>> compToComp = nm.componentToComponents;
 		createFullGraph(graph, compToComp, true);
 	}

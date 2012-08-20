@@ -74,11 +74,23 @@ public class DependencyView extends ViewPart {
 			public void widgetSelected(SelectionEvent e) {
 				// TODO open a dialog! 
 				// options:  show externals, which component, etc
+				GraphUtil.clearGraph(graph);
 				LoadGraphDialog d = new LoadGraphDialog(graph.getShell());
 				int ret = d.open();
 				String comp = d.getComponentName();
-//				new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, false);
-				new GraphContentUtil().createOneComponentDepGraph(graph, comp, true);
+				String type = d.getGraphType();
+				if( type.equals(LoadGraphDialog.FULL_GRAPH)) {
+					new GraphContentUtil().createFullGraph(graph);
+				} else if( type.equals(LoadGraphDialog.ONE_COMP)) {
+					new GraphContentUtil().createOneComponentDepGraph(graph, comp, false);
+				} else if( type.equals(LoadGraphDialog.ONE_COMP_EXTERNALS)) {
+					new GraphContentUtil().createOneComponentDepGraph(graph, comp, true);
+				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS)) {
+					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, false);
+				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS)) {
+					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, true);
+				}
+				GraphUtil.organizeGraph(graph);
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
