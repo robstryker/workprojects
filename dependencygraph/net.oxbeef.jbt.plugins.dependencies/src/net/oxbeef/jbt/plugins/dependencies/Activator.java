@@ -70,7 +70,7 @@ public class Activator extends AbstractUIPlugin {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
-	private static File getRepositoryRoot() {
+	public static File getRepositoryRoot() {
 		return new File("/home/rob/code/jbtools/jbosstools/trunk/");
 	}
 	

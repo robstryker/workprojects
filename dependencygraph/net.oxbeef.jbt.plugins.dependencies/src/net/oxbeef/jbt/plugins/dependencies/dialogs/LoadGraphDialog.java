@@ -1,5 +1,10 @@
 package net.oxbeef.jbt.plugins.dependencies.dialogs;
 
+import java.io.File;
+import java.util.ArrayList;
+
+import net.oxbeef.jbt.plugins.dependencies.Activator;
+
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -13,10 +18,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 public class LoadGraphDialog extends TitleAreaDialog {
 	public static final String FULL_GRAPH = "Full Product";
+	public static final String FULL_GRAPH_REDUNDANT = "Full Product (show redundant links)";
+	public static final String FULL_GRAPH_EXTERNALS = "Full Product (with externals)";
 	public static final String ONE_COMP = "One Component's Dependencies";
 	public static final String ONE_COMP_EXTERNALS = "One Component's Dependencies (with externals)";
 	public static final String OTHER_COMPONENTS_AGAINST_THIS = "Other components depending on this component";
@@ -36,7 +42,7 @@ public class LoadGraphDialog extends TitleAreaDialog {
 		main.setLayout(new FormLayout());
 		Label l = new Label(main, SWT.NONE);
 		l.setText("Component name: ");
-		componentNameCombo = new Combo(main, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+		componentNameCombo = new Combo(main, SWT.SINGLE | SWT.BORDER);
 		
 		l.setLayoutData(createFormData(0,5,null,0,0,5,null,0));
 		componentNameCombo.setLayoutData(createFormData(0,5,null,0,l,5,100,-5));
@@ -46,6 +52,8 @@ public class LoadGraphDialog extends TitleAreaDialog {
 			}
 		};
 		componentNameCombo.addModifyListener(m1);
+		String[] components = getComponents();
+		componentNameCombo.setItems(components);
 		
 		Label graphType = new Label(main, SWT.NONE);
 		graphType.setText("Graph Type: ");
@@ -53,7 +61,8 @@ public class LoadGraphDialog extends TitleAreaDialog {
 		graphTypeCombo = new Combo(main, SWT.READ_ONLY | SWT.BORDER);
 		
 		graphTypeCombo.setItems(new String[] { 
-				FULL_GRAPH, ONE_COMP, ONE_COMP_EXTERNALS,
+				FULL_GRAPH, FULL_GRAPH_REDUNDANT, FULL_GRAPH_EXTERNALS,
+				ONE_COMP, ONE_COMP_EXTERNALS,
 				OTHER_COMPONENTS_AGAINST_THIS,
 				OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS
 		} );
@@ -63,6 +72,18 @@ public class LoadGraphDialog extends TitleAreaDialog {
 		storeValues();
 		return c;
 	}
+	
+	private String[] getComponents() {
+		ArrayList<String> comps = new ArrayList<String>();
+		File f = Activator.getRepositoryRoot();
+		File[] children = f.listFiles();
+		for( int i = 0; i < children.length; i++ ) {
+			if( children[i].isDirectory() && new File(children[i], "plugins").exists())
+				comps.add(children[i].getName());
+		}
+		return (String[]) comps.toArray(new String[comps.size()]);
+	}
+	
 	public void storeValues() {
 		compNameVal = componentNameCombo.getText();
 		graphTypeVal = graphTypeCombo.getText();

@@ -80,7 +80,11 @@ public class DependencyView extends ViewPart {
 				String comp = d.getComponentName();
 				String type = d.getGraphType();
 				if( type.equals(LoadGraphDialog.FULL_GRAPH)) {
-					new GraphContentUtil().createFullGraph(graph);
+					new GraphContentUtil().createFullGraph(graph, false, false);
+				} else if( type.equals(LoadGraphDialog.FULL_GRAPH_EXTERNALS)) {
+					new GraphContentUtil().createFullGraph(graph, false, true);
+				} else if( type.equals(LoadGraphDialog.FULL_GRAPH_REDUNDANT)) {
+					new GraphContentUtil().createFullGraph(graph, true, false);
 				} else if( type.equals(LoadGraphDialog.ONE_COMP)) {
 					new GraphContentUtil().createOneComponentDepGraph(graph, comp, false);
 				} else if( type.equals(LoadGraphDialog.ONE_COMP_EXTERNALS)) {
@@ -131,6 +135,7 @@ public class DependencyView extends ViewPart {
 			}
 
 		});
+		GraphUtil.organizeGraph(graph);
 	}
 	
 

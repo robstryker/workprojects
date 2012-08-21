@@ -68,7 +68,7 @@ public class GraphContentUtil {
 				}
 			}
 		}
-		createFullGraph(graph, customMap, false);
+		createFullGraph(graph, customMap, false, true);
 	}
 	
 	// creates a map of one component's plugins and it's lower level plugin deps
@@ -103,26 +103,28 @@ public class GraphContentUtil {
 			}
 		}
 		
-		createFullGraph(graph, customMap, false);
+		createFullGraph(graph, customMap, false, true);
 	}
 	
-	public void createFullGraph(Graph graph) {
+	public void createFullGraph(Graph graph, boolean showRedundant, boolean includeExternals) {
 		DependencyModel nm = Activator.getDefault().getModel();
 		HashMap<String, ArrayList<String>> compToComp = nm.componentToComponents;
-		createFullGraph(graph, compToComp, true);
+		createFullGraph(graph, compToComp, showRedundant, includeExternals);
 	}
 	
 	
 	private HashMap<String, GraphNode> graphNodeMap;
-	private void createFullGraph(Graph graph, HashMap<String, ArrayList<String>> map, boolean showRedundant) {
+	private void createFullGraph(Graph graph, HashMap<String, ArrayList<String>> map, boolean showRedundant, boolean showExternals) {
 		initColors(graph.getDisplay());
 		
 		graphNodeMap = new HashMap<String, GraphNode>();
 		Iterator<String> it = map.keySet().iterator();
 		while(it.hasNext()) {
 			String compName = it.next();
-			GraphNode node1 = new GraphNode(graph, SWT.NONE, compName);
-			graphNodeMap.put(compName, node1);
+			if( showExternals || compName.indexOf(".") == -1) {
+				GraphNode node1 = new GraphNode(graph, SWT.NONE, compName);
+				graphNodeMap.put(compName, node1);
+			}
 		}
 		
 		it = map.keySet().iterator();
