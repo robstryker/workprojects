@@ -86,7 +86,7 @@ public class LoadGraphDialog extends TitleAreaDialog {
 	
 	public void storeValues() {
 		compNameVal = componentNameCombo.getText();
-		graphTypeVal = graphTypeCombo.getText();
+		graphTypeVal = graphTypeCombo==null?"":graphTypeCombo.getText();
 	}
 	
 	public String getGraphType() {
