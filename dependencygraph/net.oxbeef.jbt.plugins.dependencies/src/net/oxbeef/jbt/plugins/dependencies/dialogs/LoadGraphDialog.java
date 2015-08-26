@@ -25,6 +25,8 @@ public class LoadGraphDialog extends TitleAreaDialog {
 	public static final String FULL_GRAPH_EXTERNALS = "Full Product (with externals)";
 	public static final String ONE_COMP = "One Component's Dependencies";
 	public static final String ONE_COMP_EXTERNALS = "One Component's Dependencies (with externals)";
+	public static final String PLUGIN_TO_PLUGIN = "Plugin to Plugin Dependencies";
+	public static final String PLUGIN_TO_PLUGIN_EXTERNALS = "Plugin to Plugin Dependencies (with externals)";
 	public static final String OTHER_COMPONENTS_AGAINST_THIS = "Other components depending on this component";
 	public static final String OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS = "Other components depending on this component (with externals)";
 	
@@ -63,6 +65,7 @@ public class LoadGraphDialog extends TitleAreaDialog {
 		graphTypeCombo.setItems(new String[] { 
 				FULL_GRAPH, FULL_GRAPH_REDUNDANT, FULL_GRAPH_EXTERNALS,
 				ONE_COMP, ONE_COMP_EXTERNALS,
+				PLUGIN_TO_PLUGIN, PLUGIN_TO_PLUGIN_EXTERNALS,
 				OTHER_COMPONENTS_AGAINST_THIS,
 				OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS
 		} );

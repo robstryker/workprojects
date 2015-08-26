@@ -64,6 +64,14 @@ public class DependencyModel {
 	private void addComponent(File f) {
 		String compName = f.getName();
 		File pluginsRoot = new File(f, "plugins");
+		if( !pluginsRoot.exists()) {
+			File[] allChildren = f.listFiles();
+			for( int i = 0; i < allChildren.length; i++ ) {
+				if( allChildren[i].isDirectory())
+					addComponent(allChildren[i]);
+			}
+			return;
+		}
 		File[] plugins = pluginsRoot.listFiles();
 		if( plugins == null ) {
 			return;

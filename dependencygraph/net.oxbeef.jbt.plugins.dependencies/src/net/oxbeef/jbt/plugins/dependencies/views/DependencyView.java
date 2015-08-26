@@ -89,6 +89,10 @@ public class DependencyView extends ViewPart {
 					new GraphContentUtil().createOneComponentDepGraph(graph, comp, false);
 				} else if( type.equals(LoadGraphDialog.ONE_COMP_EXTERNALS)) {
 					new GraphContentUtil().createOneComponentDepGraph(graph, comp, true);
+				} else if( type.equals(LoadGraphDialog.PLUGIN_TO_PLUGIN)) {
+					new GraphContentUtil().createPluginToPluginGraph(graph, false, false);
+				} else if( type.equals(LoadGraphDialog.PLUGIN_TO_PLUGIN_EXTERNALS)) {
+					new GraphContentUtil().createPluginToPluginGraph(graph, false, true);
 				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS)) {
 					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, false);
 				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS)) {

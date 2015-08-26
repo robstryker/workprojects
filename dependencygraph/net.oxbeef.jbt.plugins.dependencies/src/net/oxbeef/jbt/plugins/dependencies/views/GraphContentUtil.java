@@ -111,7 +111,14 @@ public class GraphContentUtil {
 		HashMap<String, ArrayList<String>> compToComp = nm.componentToComponents;
 		createFullGraph(graph, compToComp, showRedundant, includeExternals);
 	}
+
 	
+	public void createPluginToPluginGraph(Graph graph, boolean showRedundant, boolean includeExternals) {
+		DependencyModel nm = Activator.getDefault().getModel();
+		HashMap<String, ArrayList<String>> pluginToPlugin = nm.pluginToPlugin;
+		createFullGraph(graph, pluginToPlugin, showRedundant, includeExternals);
+	}
+
 	
 	private HashMap<String, GraphNode> graphNodeMap;
 	private void createFullGraph(Graph graph, HashMap<String, ArrayList<String>> map, boolean showRedundant, boolean showExternals) {
