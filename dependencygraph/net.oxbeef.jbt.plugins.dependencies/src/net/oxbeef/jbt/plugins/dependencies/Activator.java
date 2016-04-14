@@ -71,7 +71,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	public static File getRepositoryRoot() {
-		return new File("/home/rob/code/fuseide/fuseide");
+		return new File("/home/rob/code/jbtools/github");
 	}
 	
 

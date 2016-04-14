@@ -83,6 +83,14 @@ public class LoadGraphDialog extends TitleAreaDialog {
 		for( int i = 0; i < children.length; i++ ) {
 			if( children[i].isDirectory() && new File(children[i], "plugins").exists())
 				comps.add(children[i].getName());
+			else if(children[i].isDirectory() & children[i].isDirectory()) {
+				File[] grandChildren = children[i].listFiles();
+				for( int j = 0; j < grandChildren.length; j++ ) {
+					if( grandChildren[j].isDirectory() && new File(grandChildren[j], "plugins").exists()) {
+						comps.add(grandChildren[j].getName());
+					}
+				}
+			}
 		}
 		return (String[]) comps.toArray(new String[comps.size()]);
 	}
