@@ -12,7 +12,7 @@
             name="Sample View"
             icon="icons/sample.gif"
             category="net.oxbeef.jbt.deptree"
-            class="net.oxbeef.jbt.plugins.dependencies.views.DependencyView"
+            class="net.oxbeef.jbt.plugins.dependencies.ui.views.DependencyView"
             id="net.oxbeef.jbt.deptree.views.SampleView">
       </view>
    </extension>

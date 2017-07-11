@@ -1,7 +1,6 @@
-package net.oxbeef.jbt.plugins.dependencies.views;
+package net.oxbeef.jbt.plugins.dependencies.ui.views;
 
-import net.oxbeef.jbt.plugins.dependencies.dialogs.LoadGraphDialog;
-
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,6 +14,10 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+
+import net.oxbeef.jbt.plugins.dependencies.ui.IModelUI;
+import net.oxbeef.jbt.plugins.dependencies.ui.ModelUIProviders;
+import net.oxbeef.jbt.plugins.dependencies.ui.dialogs.LoadGraphDialog;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -79,25 +82,34 @@ public class DependencyView extends ViewPart {
 				int ret = d.open();
 				String comp = d.getComponentName();
 				String type = d.getGraphType();
-				if( type.equals(LoadGraphDialog.FULL_GRAPH)) {
-					new GraphContentUtil().createFullGraph(graph, false, false);
-				} else if( type.equals(LoadGraphDialog.FULL_GRAPH_EXTERNALS)) {
-					new GraphContentUtil().createFullGraph(graph, false, true);
-				} else if( type.equals(LoadGraphDialog.FULL_GRAPH_REDUNDANT)) {
-					new GraphContentUtil().createFullGraph(graph, true, false);
-				} else if( type.equals(LoadGraphDialog.ONE_COMP)) {
-					new GraphContentUtil().createOneComponentDepGraph(graph, comp, false);
-				} else if( type.equals(LoadGraphDialog.ONE_COMP_EXTERNALS)) {
-					new GraphContentUtil().createOneComponentDepGraph(graph, comp, true);
-				} else if( type.equals(LoadGraphDialog.PLUGIN_TO_PLUGIN)) {
-					new GraphContentUtil().createPluginToPluginGraph(graph, false, false);
-				} else if( type.equals(LoadGraphDialog.PLUGIN_TO_PLUGIN_EXTERNALS)) {
-					new GraphContentUtil().createPluginToPluginGraph(graph, false, true);
-				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS)) {
-					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, false);
-				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS)) {
-					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, true);
-				}
+				String rootDir = d.getRootDir();
+				String strategy = d.getStrategy();
+				
+				IModelUI ui = ModelUIProviders.getUI(strategy);
+				ui.fillGraph(graph, rootDir, type, comp, new NullProgressMonitor());
+				
+				
+//				if( type.equals(LoadGraphDialog.FULL_GRAPH)) {
+//					new GraphContentUtil().createFullGraph(graph, false, false);
+//				} else if( type.equals(LoadGraphDialog.FULL_GRAPH_EXTERNALS)) {
+//					new GraphContentUtil().createFullGraph(graph, false, true);
+//				} else if( type.equals(LoadGraphDialog.FULL_GRAPH_REDUNDANT)) {
+//					new GraphContentUtil().createFullGraph(graph, true, false);
+//				} else if( type.equals(LoadGraphDialog.ONE_COMP)) {
+//					new GraphContentUtil().createOneComponentDepGraph(graph, comp, false);
+//				} else if( type.equals(LoadGraphDialog.ONE_COMP_EXTERNALS)) {
+//					new GraphContentUtil().createOneComponentDepGraph(graph, comp, true);
+//				} else if( type.equals(LoadGraphDialog.PLUGIN_TO_PLUGIN)) {
+//					new GraphContentUtil().createPluginToPluginGraph(graph, false, false);
+//				} else if( type.equals(LoadGraphDialog.PLUGIN_TO_PLUGIN_EXTERNALS)) {
+//					new GraphContentUtil().createPluginToPluginGraph(graph, false, true);
+//				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS)) {
+//					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, false);
+//				} else if( type.equals(LoadGraphDialog.OTHER_COMPONENTS_AGAINST_THIS_EXTERNALS)) {
+//					new GraphContentUtil().createComponentsToOneComplonentPluginGraph(graph, comp, true);
+//				}
+				
+				
 				GraphUtil.organizeGraph(graph);
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -123,11 +135,6 @@ public class DependencyView extends ViewPart {
 
 		addMenu(graph);
 	    
-	    
-		//GraphUtil.createFullGraph(graph);
-		//GraphUtil.createOneComponentDepGraph(graph, "common", false) {
-		new GraphContentUtil().createOneComponentDepGraph(graph, "as", false);
-		
 		graph.setLayoutAlgorithm(new RadialLayoutAlgorithm(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		// Selection listener on graphConnect or GraphNode is not supported

@@ -1,4 +1,4 @@
-package net.oxbeef.jbt.plugins.dependencies.views;
+package net.oxbeef.jbt.plugins.dependencies.ui.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,9 +70,7 @@ public class GraphUtil {
 		while(i.hasNext()) {
 			GraphNode n = (GraphNode)i.next();
 			System.out.println(n);
-			if(n.toString().contains("org.eclipse.help")) {
-				System.out.println();
-			}
+
 			GraphConnection[] nodeConnections = getConnectionsForNode(n, g.getConnections(), true);
 			int lowestDep = -1;
 			for( int j = 0; j < nodeConnections.length; j++ ) {

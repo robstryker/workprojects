@@ -2,11 +2,14 @@ package net.oxbeef.jbt.plugins.dependencies;
 
 import java.io.File;
 
-import net.oxbeef.jbt.plugins.dependencies.model.DependencyModel;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import net.oxbeef.jbt.plugins.dependencies.core.ModelProviders;
+import net.oxbeef.jbt.plugins.dependencies.core.impl.eclipse.EclipseModelLoader;
+import net.oxbeef.jbt.plugins.dependencies.ui.ModelUIProviders;
+import net.oxbeef.jbt.plugins.dependencies.ui.impl.eclipse.EclipseModelUI;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -25,7 +28,6 @@ public class Activator extends AbstractUIPlugin {
 	public Activator() {
 	}
 
-	private DependencyModel model = null;
 	
 	/*
 	 * (non-Javadoc)
@@ -34,11 +36,8 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		model = new DependencyModel(getRepositoryRoot());
-	}
-
-	public DependencyModel getModel() {
-		return model;
+		ModelProviders.registerLoader("eclipse", new EclipseModelLoader());
+		ModelUIProviders.register("eclipse", new EclipseModelUI());
 	}
 	
 	/*
@@ -71,7 +70,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	public static File getRepositoryRoot() {
-		return new File("/home/rob/code/jbtools/github");
+		return new File("/home/rob/code/eclipse/wtp_clean");
 	}
 	
 
